@@ -1,0 +1,109 @@
+{% extends "ocean/wrapper.html" %}
+
+{% block include %}
+	{% if user.is_authenticated %}
+		<div class="row">
+			<form name="editp" action="profilesave_{{user.email}}/" method="post" style="width: 100%" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="col-12 d-flex justify-content-between"><div class="col-8">
+					<div class="col-12 d-flex justify-content-between" style="margin-top: 20px;">
+						<div class="col-6">
+							<label style="color: #522302;font-size: 15px;font-weight: bold;">Email:</label>
+							<br>
+							<input id="editpemail" type="text" name="editpemail" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{{user.email}}" disabled>
+							<br>
+						</div>
+						<div class="col-6">
+							<label style="color: #522302;font-size: 15px;font-weight: bold;">Должность:</label>
+							<br>
+							<input type="text" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if user.director %}Директор компании{% else %}{% if user.admin %}Администратор ресурса{% else %}Сотрудник компании{% endif %}{% endif %}" disabled>
+							<br>
+						</div>
+					</div>
+					<br>
+					<div class="col-12 d-flex justify-content-between">
+							<div class="col-6">
+							<label style="color: #522302;font-size: 15px;font-weight: bold;">Фамилия:</label>
+							<br>
+							<input id="editpln" type="text" name="editpln" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.ln}}{% else %}{{user.lastname}}{% endif %}" required>
+							<br>
+						</div>
+						<div class="col-6">
+							<label style="color: #522302;font-size: 15px;font-weight: bold;">Имя:</label>
+							<br>
+							<input id="editpfn" type="text" name="editpfn" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.fn}}{% else %}{{user.firstname}}{% endif %}" required>
+							<br>
+						</div>
+					</div>
+					<br>
+					<div class="col-12 d-flex justify-content-between">
+						<div class="col-6">
+							<label style="color: #522302;font-size: 15px;font-weight: bold;">Отчество:</label>
+							<br>
+							<input id="editpsn" type="text" name="editpsn" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.sn}}{% elif user.secondname > '' %}{{user.secondname}}{% endif %}">
+							<br>
+						</div>
+						<div class="col-6">
+							<label style="color: #522302;font-size: 15px;font-weight: bold;">Дата рождения:</label>
+							<br>
+							<input id="editpdate" type="date" name="editpdate" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.date}}{% elif birth %}{{birth}}{% endif %}">
+							<br>
+						</div>
+					</div>
+					<br>
+					<div class="col-12 d-flex justify-content-between">
+						<div class="col-6">
+							<label style="color: #522302;font-size: 15px;font-weight: bold;">Старый пароль:</label>
+							<br>
+							<input id="oldpass" type="password" name="oldpass" style="border-radius: 5px;min-width: 250px;border: none;{% if error == 'oldpasser' %}border: 2px solid red;{% endif %}padding-left: 2px;" required>
+							{% if error == "oldpasser" %}
+								<br>
+								<label style="font-size: 12px;color: red;margin: 0;padding: 0;">ошибка ввода пароля</label>
+							{% endif %}
+							<br>
+						</div>
+						<div class="col-6">					
+							<input type="submit" style="background-color: #03b01f;border-radius: 5px;border: none;cursor: pointer;color: white;margin-top: 5px;width: 250px;height: 52px;font-size: 24px;" value="Сохранить">
+						</div>
+					</div>
+					<br>
+					<div class="col-12 d-flex justify-content-between">
+						<div class="col-6">
+							<label style="color: #522302;font-size: 15px;font-weight: bold;">Новый пароль:</label>
+							<br>
+							<input id="newpass1" type="password" name="newpass1" style="border-radius: 5px;min-width: 250px;border: none;{% if error == 'newpass' %}border: 2px solid red;{% endif %}{% if error == 'newpass1' %}border: 2px solid red;{% endif %}padding-left: 2px;">
+							<br>
+							{% if error == "newpass" %}
+								<label style="font-size: 12px;color: red;margin: 0;padding: 0;">Пароли не совпадают</label>
+								<br>
+							{% endif %}
+							{% if error == "newpass1" %}
+								<label style="font-size: 12px;color: red;margin: 0;padding: 0;">Слишком простой пароль. Попробуйте другой!</label>
+								<br>
+							{% endif %}
+						</div>
+						<div class="col-6">
+							<label style="color: #522302;font-size: 15px;font-weight: bold;">Подтвердите новый пароль:</label>
+							<br>
+							<input id="newpass2" type="password" name="newpass2" style="border-radius: 5px;min-width: 250px;border: none;{% if error == 'newpass' %}border: 2px solid red;{% endif %}padding-left: 2px;">
+							<br>
+						</div>
+					</div>
+				</div>
+				<div class="col-4" style="margin-top: 20px;width: 350px;"><div class="col-auto d-flex flex-column"><img src="{{user.image.url}}" width="300px" height="350px" style="border: 1px solid #522302;"><input style="margin-top: 10px;" type="file" name="editpfile" accept="image/*"><p >Загрузите изображение 300*350px<br>размером не более 3.5Мб</p></div></div></div>
+			</form>
+		</div>
+		<div class="col-12" style="font-size: 18px;color: #522302;margin: 0 25px;">
+			{% if user.old_pass %}
+			<p style="margin-bottom: 4px;"><span style="color: red;font-weight: bold;">! </span>Для безопасности Вашего акканута рекомендуется сменить пароль после первичной авторизации</p>
+			{% endif %}
+			<p style="margin-bottom: 4px;"><span style="color: red;font-weight: bold;">! </span>Не забывайте:</p>
+			<ul>
+				<li>Ваш пароль не может быть слишком похож на другую вашу личную информацию.</li>
+				<li>Ваш пароль должен содержать не менее 8 символов.</li>
+				<li>Ваш пароль не может быть часто используемым паролем.</li>
+				<li>Ваш пароль должен состоять из букв и цифр</li>
+			</ul>
+		</div>
+	{% endif %}
+{% endblock %}

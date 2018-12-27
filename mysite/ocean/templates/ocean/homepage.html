@@ -1,0 +1,65 @@
+{% extends "ocean/wrapper.html" %}
+
+{% block include %}
+{% for i in lines %}{{i}}{% endfor %}
+<div class="row" style="position: relative;">
+	<div class="col-12 float-right" style="margin: 0; padding: 0;">
+		<div class="pull-right" style="float: right;" id="con1img"></div>
+	</div>
+	<div style="position: absolute;width: 450px;height: 520px;left: 10%">
+		<div class="col-12 text-center" style="border: 1px solid #522302;color: #522302;padding: 0;margin-top: 100px;background-color: rgba(255,255,255,.4);">
+			<p style="font-size: 14px;margin-bottom: 0;margin-top: 5px;">Вас приветствует</p>
+			<p class="name-font" style="font-size: 30px;padding-bottom: 0;">Единая Система Учёта Флота</p>
+		</div>
+		<div class="col-12" style="color: #522302;margin: 0;padding: 0;margin-top: 140px;background-color: rgba(255,255,255,.4);font-weight: bold;border: 1px solid #522302">
+			<p style="margin: 0;padding-left: 2px;">Здесь вы сможете узнать:</p>
+			<ul>
+				<li>Полную информацию о судоходной компании</li>
+				<li>Данные о директоре компании</li>
+				<li>Список имеющихся судов компании</li>
+			</ul>
+		</div>
+	</div>
+	<p class="text-justify" style="color: #522302;padding-bottom: 2px;margin-left: 15px;margin-right: 15px;font-size: 18px;margin-bottom: 2px;"><span style="font-weight: bold;">!</span>Вам нужно лишь ввести и/или выбрать название компании в блоке ниже и получить все необходимые данные.</p>
+</div>
+<div class="row" style="border-top: 1px solid #522302;"></div>
+<div class="row justify-content-center" style="margin-top: 20px;">
+	<form class="form-inline" action="/companies/" method="get">
+		<div class="col-sm-auto col-4"><label for="" class="text-left" style="color: #522302;font-size: 20px;font-weight: bold;">Компания:</label></div>
+		<div class="col-sm-auto col-8">
+			<input type="text" name="choosecompany" id="choosecompany" list="choose" required style="min-width: 200px;width: 100%;border-radius: 10px;border: none;padding-left: 5px;font-size: 16px;font-weight: bold;{% if er_co %}border: 2px solid red;{% endif %}" placeholder="{% if er_co %}{{er_co}}{% endif %}" autocomplete="on">
+			<datalist id="choose">
+				{% for i in args_co %}
+				<option value="{{i}}" style="padding-left: 5px;font-weight: bold;font-size: 16px;">
+				{% endfor %}
+			</datalist>
+		</div>
+		<div class="col-sm-auto col-12"><input type="submit" style="width: 100%;color: white;background-color: #522302;padding-left: 5px; padding-right: 5px; border-radius: 10px;border: none;font-size: 20px;cursor: pointer;" value="Показать"></div>
+	</form>
+</div>
+<div class="row" style="border-top: 1px solid #522302; padding: 0;margin-top: 20px;"></div>
+<div class="row">
+	<div class="col-8 text-center float-right" style="overflow: hidden;padding-left: 0;">
+		<p style="padding: 2px;font-size: 22px;color: #522302;font-weight: bold;margin-bottom: 0;">компании-партнёры</p>
+		<img src="https://pp.userapi.com/c830709/v830709312/1cb661/JgeRJXWz0tg.jpg" style="float: right;">
+	</div>
+	<div class="col-4 text-center">
+		<p style="padding: 2px;margin-bottom: 0;font-size: 22px;color: #522302;font-weight: bold;">Связаться с нами</p>
+		<br><br>
+		<div class="text-right">
+			<p style="font-size: 20px;color: darkgreen;font-style: italic;">8(812)333-30-30</p>
+			<p style="font-size: 20px;color: blue;font-style: italic;">efas@efas.ru</p>
+		</div>
+	</div>
+	<div class="text-center col-12" style="margin-top: 20px;font-size: 30px;color: #522302;font-weight: bold;padding-bottom: 20px;">Спасибо за использование данного ресурса!</div>
+</div>
+{% if dnew %}
+	<p>{{dnew.name}}</p>
+	<p>{{dnew.model}}</p>
+	<p>{{dnew.date}}</p>
+	<p>{{dnew.company}}</p>
+	<p>{{dnew.owner}}</p>
+	<p>{{dnew.k}}</p>
+	<p>{{dnew.n}}</p>
+{% endif %}
+{% endblock %}

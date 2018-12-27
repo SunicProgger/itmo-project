@@ -1,0 +1,130 @@
+{% extends "ocean/wrapper.html" %}
+
+{% block include %}
+{% if people and user.director %}
+<div class="row justify-content-center"><div class="col-auto"><span style="font-size: 30px;color: #522302;font-style: italic;">Сотрудники компании {{user.get_company}}</span></div></div>
+<div class="row" style="margin-top: 40px;margin-right: 22px;color: white;cursor: pointer;font-size: 18px;">
+	<div class="col-12 d-flex justify-content-between" style="padding: 0;">
+		<input type="text" id="search-person" placeholder="Найти сотрудника">
+		<p class="right" style="margin: 0;" id="add-p-block-show">Добавить нового сотрудника</p>
+	</div>
+	<div id="add-p-block" style="color: #522302;{% if error %}display: block;{% endif %};margin-top: 5px;">
+		<p style="text-align: center;color: #522302;font-size: 20px;font-style: italic;">Добавить нового сотрудника компании {{user.get_company}}</p>
+		<form action="/newperson/" method="post" name="newperson" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="col-12 d-flex justify-content-center">
+				<div class="col-4">
+					<label style="color: #522302;font-size: 15px;font-weight: bold;">Почта:</label>
+					<br>
+					<input id="addpmail" type="email" name="addpmail" style="border-radius: 5px;min-width: 250px;border: 1px solid #522302;{% if error == 'usedmail' %}border: 1px solid red;{% endif %}padding-left: 2px;" placeholder="ivanov@mail.ru" required value="{% if error == 'usedmail' %}{{lastmail}}{% endif %}">
+					<br>
+					{% if error == "usedmail" %}
+					<label style="color: red;font-size: 12px;">этот Email уже зарегестрирован в системе!</label>
+					<br>
+					{% endif %}
+				</div>
+				<div class="col-4">
+					<label style="color: #522302;font-size: 15px;font-weight: bold;">Пароль:</label>
+					<br>
+					<input id="addppass" type="text" name="addppass" style="border-radius: 5px;min-width: 250px;border: 1px solid #522302;padding-left: 2px;" placeholder="••••••••" required value="{% if error == 'usedmail' %}{{lastpass}}{% endif %}">
+					<br>
+				</div>
+					<div class="col-4">
+					<label style="color: #522302;font-size: 15px;font-weight: bold;">Дата рождения:</label>
+					<br>
+					<input id="addpdate" type="date" name="addpdate" style="border-radius: 5px;min-width: 250px;border: 1px solid #522302;padding-left: 2px;" placeholder="ГГГГ-ММ-ДД" required value="{% if error == 'usedmail' %}{{lastdate}}{% endif %}">
+					<br>
+				</div>
+			</div>
+			<div class="col-12 d-flex justify-content-center">
+				<div class="col-4">
+					<label style="color: #522302;font-size: 15px;font-weight: bold;">Фамилия:</label>
+					<br>
+					<input id="addpln" type="text" name="addpln" style="border-radius: 5px;min-width: 250px;border: 1px solid #522302;padding-left: 2px;" placeholder="Иванов" required value="{% if error == 'usedmail' %}{{lastln}}{% endif %}">
+					<br>
+				</div>
+				<div class="col-4">
+					<label style="color: #522302;font-size: 15px;font-weight: bold;">Имя:</label>
+					<br>
+					<input id="addpfn" type="text" name="addpfn" style="border-radius: 5px;min-width: 250px;border: 1px solid #522302;padding-left: 2px;" placeholder="Иван" required value="{% if error == 'usedmail' %}{{lastfn}}{% endif %}">
+					<br>
+				</div>
+				<div class="col-4">
+					<label style="color: #522302;font-size: 15px;font-weight: bold;">Отчество:</label>
+					<br>
+					<input id="addpsn" type="text" name="addpsn" style="border-radius: 5px;min-width: 250px;border: 1px solid #522302;padding-left: 2px;" placeholder="Иванович" value="{% if error == 'usedmail' %}{{lastsn}}{% endif %}">
+					<br>
+				</div>
+			</div>
+			<div class="col-12 d-flex justify-content-center">
+				<div class="col-4">
+					<label style="color: #522302;font-size: 15px;font-weight: bold;">Должность:</label>
+					<br>
+					<input id="addpdir" type="radio" name="addpdir" style="border-radius: 5px;border: none;" value="S" checked="checked">Сотрудник
+					<input id="addpdir" type="radio" name="addpdir" style="" value="D" style="color: #522302">Директор
+					<br>
+				</div>
+				<div class="col-4">
+					<label style="color: #522302;font-size: 15px;font-weight: bold;">Фотография:</label>
+					<input style="margin-top: 10px;" type="file" name="addpfile" accept="image/*">
+					<br>
+				</div>
+				<div class="col-4">
+					<br>
+					<p>Загрузите изображение 300*350px<br>размером не более 3.5Мб</p>
+				</div>
+			</div
+			><div class="col-12 d-flex justify-content-center" style="margin-bottom: 10px;">
+				<input type="submit" style="background-color: #03b01f;border-radius: 5px;border: none;cursor: pointer;color: white;margin-top: 10px;" value="Добавить">
+			</div>
+		</form>
+	</div>
+</div>
+<div class="row">
+	{% for i in people %}
+	<div class="col-6"><div class="person-block col-auto justify-content-start">
+		<div class="row" style="position: relative;">
+			<div class="col-4 d-flex justify-content-center" style="margin-right: 0;padding-right: 0;"><img src="{{i.image.url}}" width="100px" height="120px" style="border: 1px solid #522302;"></div>
+			<div class="col-8" style="padding-right: 25px;margin: 0;color: #322502;font-size: 16px;">				
+				<p style="color: #522302;margin: 0;">ФИО:<span style="font-weight: bold;"> {{i.get_full_name}}</span></p>
+				<p style="color: #522302;margin: 0;">Почта:<span style="font-weight: bold;"> {{i.email}}</span></p>
+				<p style="color: #522302;margin: 0;">Дата рождения:<span style="font-weight: bold;"> {{i.date}}</span></p>
+				<p style="color: #522302;margin: 0;">Должность:<span style="font-weight: bold;"> {% if i.director%}Директор{% else %}Сотрудник{% endif %}</span></p>
+				<a href="getinfo_{{i.email}}" style="color: black;"><p style="position: absolute;text-decoration: underline;font-size: 10px;right: 8px;bottom: 0;margin: 0;cursor: pointer;">Подробная информация</p></a>
+			</div>
+			<div style="position: absolute;top: 0;right: 10px;"><a href="delp_{{i.email}}"><div class="people-delete mx-auto" onclick="delpalert('{{i.email}}')"></div></a></div>
+		</div>
+	</div></div>
+	{% endfor %}
+</div>
+{% if deadpeople %}
+<div class="row" style="padding: 1px 35px;"><div class="col-12 text-center" style="color: #522302;font-size: 20px;border-top: 1px solid #522302;font-style: italic;">Удаленные аккаунты сотрудников компании</div></div>
+{% endif %}
+<div class="row" style="margin-top: 0;">
+	{% for i in deadpeople %}
+	<div class="col-6"><div class="person-block col-auto justify-content-start" style="background-color: silver;">
+		<div class="row" style="position: relative;">
+			<div class="col-4 d-flex justify-content-center" style="margin-right: 0;padding-right: 0;"><img src="{{i.image.url}}" width="100px" height="120px" style="border: 1px solid #522302;"></div>
+			<div class="col-8" style="padding-right: 25px;margin: 0;color: #322502;font-size: 16px;">
+				<p style="color: #522302;margin: 0;">ФИО:<span style="font-weight: bold;"> {{i.get_full_name}}</span></p>
+				<p style="color: #522302;margin: 0;">Почта:<span style="font-weight: bold;"> {{i.email}}</span></p>
+				<p style="color: #522302;margin: 0;">Дата рождения:<span style="font-weight: bold;"> {{i.date}}</span></p>
+				<p style="color: #522302;margin: 0;">Должность:<span style="font-weight: bold;"> {% if i.director%}Директор{% else %}Сотрудник{% endif %}</span></p>
+				<a href="getinfo_{{i.email}}" style="color: black;"><p style="position: absolute;text-decoration: underline;font-size: 10px;right: 8px;bottom: 0;margin: 0;cursor: pointer;">Подробная информация</p></a>
+			</div>
+			<div style="position: absolute;top: 0;right: 10px;"><a href="actp_{{i.email}}"><div class="people-activate mx-auto"></div></a></div>
+		</div>
+	</div></div>
+	{% endfor %}
+</div>
+{% endif %}
+<script type="text/javascript">
+$('#add-p-block-show').click(function() {
+	if ($('#add-p-block').css('display') == "none") {
+		$('#add-p-block').show();
+	} else {
+		$('#add-p-block').hide();
+	}
+});
+</script>
+{% endblock %}

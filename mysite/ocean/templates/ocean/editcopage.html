@@ -1,0 +1,51 @@
+{% extends "ocean/wrapper.html" %}
+
+{% block include %}
+{{problem}}
+	{% if user.is_authenticated and user.director and args_co %}
+	<div class="row">
+		<div class="col-sm-6 col-12">
+			<form action="/editco/" name="editcoform" method="post" style="margin-top: 20px;">
+				{% csrf_token %}
+				<input id="editcoid" type="hidden" name="editcoid" value="{{args_co.id}}" required hidden>
+				<label style="color: #522302;font-size: 15px;font-weight: bold;">Название компании:</label>
+				<br>
+				<input id="editconame" type="text" name="editconame" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);font-family: CaviarDreams;font-style: italic;font-size: 24px;{% if problem == 'noname' %}border: 2px solid red;{% endif %}" value="{{args_co.name}}" required>
+				<br>
+				<label style="color: #522302;font-size: 15px;font-weight: bold;">Дата основания:</label>
+				<br>
+				<input id="editcodate" type="text" name="editcodate" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);" value="{{args_co.date}}">
+				<br>
+				<label style="color: #522302;font-size: 15px;font-weight: bold;">Местоположение:</label>
+				<br>
+				<input id="editcolocation" type="text" name="editcolocation" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);" value="{{args_co.location}}">
+				<br>
+				<label style="color: #522302;font-size: 15px;font-weight: bold;">Почта директора:</label>
+				<br>
+				<input id="editcodirector" type="email" name="editcodirector" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);{% if problem == 'noemail' %}border: 2px solid red;{% endif %}" value="{{args_co.director}}" required>
+				<br>
+				{% if problem == 'noemail' %}
+				<label style="color: red;font-size: 12px;margin: 0;padding: 0;">Аккаунт должен быть зарегистрирован в системе.</label>
+				<br>
+				{% endif %}
+				<label style="color: #522302;font-size: 15px;font-weight: bold;">Сайт:</label>
+				<br>
+				<input id="editcolink" type="text" name="editcolink" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);" pattern="[A-Za-z0-9]+\.+[A-Za-z\/\.]+" value="{{args_co.link}}">
+				<br>
+				<label style="color: #522302;font-size: 15px;font-weight: bold;">Описание:</label>
+				<br>
+				<textarea id="editcotitle" name="editcotitle" style="border-radius: 5px;min-width: 400px;min-height: 30px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);">{{args_co.title}}</textarea>
+				<br>
+				<input type="submit" style="background-color: #03b01f;border-radius: 5px;border: none;cursor: pointer;color: white;margin-top: 10px;" value="Сохранить">
+			</form>
+		</div>
+		<div class="col-sm-6 col-12 d-flex justify-content-end" id="backfromaddshippage">
+			<div class="col-sm-auto col-12 mx-20" style="margin-top: 20px;">
+				<a onclick="javascript:history.back(); return false;" style="margin-right: 20px;margin-left: 20px;margin-top: 20px;"><button class="btn btn-info col-sm-auto col-12" style="background-color: #522302;border: none;">Вернуться</button></a>
+			</div>
+		</div>
+	</div>
+	{% else %}
+		<p style="font-size: 20px;color: #522302;margin-top: 10px">Для редактирования данных компании авторизируйтесь!</p>
+	{% endif %}
+{% endblock %}

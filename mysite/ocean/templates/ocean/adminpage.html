@@ -1,0 +1,125 @@
+{% extends "ocean/wrapper.html" %}
+
+{% block include %}
+{% if user.is_authenticated and user.admin%}
+<div id="addcompany"></div>
+<div id="delcoalert" style="display: none;position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.7);z-index: 100;"></div>
+<div class="col-12 text-center" style="font-size: 28px;color: #522302;font-family: CaviarDreams;font-style: italic;text-align: center;">Компании</div>
+<input type="text" id="search-co" placeholder="Поиск...">
+<br>
+<div class="row" id="add-co-block" style="{% if not lastinfo %}display: none;{% endif %}">
+	<div class="col-sm-6 col-12">
+		<form action="/newcompany/" name="addcoform" method="post" style="margin-top: 20px;">
+			{% csrf_token %}
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Наименование компании:</label>
+			<br>
+			<input id="addconame" type="text" name="addconame" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.name}}{% endif %}" required>
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Дата основания:</label>
+			<br>
+			<input id="addcodate" type="text" name="addcodate" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.date}}{% endif %}">
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Местоположение:</label>
+			<br>
+			<input id="addcoloc" type="text" name="addcoloc" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.loc}}{% endif %}">
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Ссылка на оф. сайт:</label>
+			<br>
+			<input id="addcolink" type="text" name="addcolink" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.link}}{% endif %}">
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Описание:</label>
+			<br>
+			<textarea id="addcotitle" type="text" name="addcotitle" style="border-radius: 5px;min-width: 400px;min-height: 100px;border: none;padding-left: 2px;">{% if lastinfo %}{{lastinfo.title}}{% endif %}</textarea>
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Почта аккаунта директора:</label>
+			<br>
+			<input id="addcomail" type="email" name="addcomail" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;{% if lastinfo %}border: 2px solid red;{% endif %}" value="{% if lastinfo %}{{lastinfo.mail}}{% endif %}" required>
+			{% if lastinfo %}<br><label style="color: red;font-size: 12px;margin: 0;">Этот email уже зарегистрирован!</label>{% endif %}
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Пароль для аккаунта:</label>
+			<br>
+			<input id="addcopass" type="text" name="addcopass" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.pass}}{% endif %}" required>
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Фамилия:</label>
+			<br>
+			<input id="addcoln" type="text" name="addcoln" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.ln}}{% endif %}" required>
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Имя:</label>
+			<br>
+			<input id="addcofn" type="text" name="addcofn" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.fn}}{% endif %}" required>
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Отчество:</label>
+			<br>
+			<input id="addcosn" type="text" name="addcosn" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.sn}}{% endif %}">
+			<br>
+			<label style="color: #522302;font-size: 15px;font-weight: bold;">Дата рождения:</label>
+			<br>
+			<input id="addcodateb" type="date" name="addcodateb" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" value="{% if lastinfo %}{{lastinfo.dateb}}{% endif %}" required>
+			<br>
+			<input type="submit" style="background-color: #03b01f;border-radius: 5px;border: none;cursor: pointer;color: white;margin-top: 10px;" value="Добавить">
+		</form>
+	</div>
+	<div class="col-sm-6 col-12 d-flex justify-content-end" id="backfromaddshippage">
+		<div class="col-sm-auto col-12 mx-20"><button class="btn btn-info col-sm-auto col-12" id="add-co-btn-close" style="background-color: #522302;border: none;">Отмена</button>
+		</div>
+	</div>
+</div>
+{% for i in list %}
+	<div class="col-12 admincodata" style="{% if lastinfo %}display: none;{% endif %}">
+		<div class="col-12 text-center" style="font-size: 20px;"><span>{{i.codata.name}}</span></div>
+		<div class="col-12 text-justify"><span style="font-weight: bold;">Директор: </span><span>{{i.codata.director}}</span></div>
+		<div class="col-12 text-justify"><span style="font-weight: bold;">Данные о компании: </span><span>дата основания - {{i.codata.date}}, местоположение - {{i.codata.location}}, описание - "{{i.codata.title}}"</span></div>
+		<div class="col-12 content-center" style="position: relative;">
+			<div class="col-12 text-center" style="font-size: 20px;"><span>Флот</span></div>
+			<div class="row"><div class="col-auto mx-auto">
+				<table>
+					<tr>
+						<td style="min-width: 200px;text-align: center;"><span>Наименование</span></td>
+						<td style="min-width: 200px;text-align: center;"><span>Тип модели</span></td>
+						<td style="min-width: 200px;text-align: center;"><span>Дата приобретения</span></td>
+					</tr>
+					{% for j in i.ships %}
+					<tr>
+						<td style="min-width: 200px;padding-left: 5px;"><span>{{j.name}}</span></td>
+						<td style="min-width: 200px;padding-left: 5px;"><span>{{j.model}}</span></td>
+						<td style="min-width: 200px;padding-left: 5px;"><span>{{j.date}}</span></td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div></div>
+			<div class="col-12 text-center" style="font-size: 20px;"><span>Сотрудники</span></div>
+			<div class="row"><div class="col-auto mx-auto">
+				<table>
+					<tr>
+						<td style="min-width: 250px;text-align: center;"><span>Email</span></td>
+						<td style="min-width: 350px;text-align: center;"><span>ФИО</span></td>
+						<td style="min-width: 200px;text-align: center;"><span>Должность</span></td>
+					</tr>
+					{% for j in i.people %}
+					<tr>
+						<td style="min-width: 200px;padding-left: 5px;"><span><a href="getinfo_{{j.email}}" style="color: black;">{{j.email}}</a></span></td>
+						<td style="min-width: 200px;padding-left: 5px;"><span>{{j.lastname}} {{j.firstname}} {{j.secondname}}</span></td>
+						<td style="min-width: 200px;padding-left: 5px;"><span>{%if j.director %}Директор{% else %}Сотрудник{% endif %}</span></td>
+					</tr>
+					{% endfor %}
+					{% for j in i.deadpeople %}
+					<tr style="background-color: rgba(0,0,0,0.4);">
+						<td style="min-width: 200px;padding-left: 5px;"><a href="getinfo_{{j.email}}" style="color: black;"><span>{{j.email}}</span></a></td>
+						<td style="min-width: 200px;padding-left: 5px;"><span>{{j.lastname}} {{j.firstname}} {{j.secondname}}</span></td>
+						<td style="min-width: 200px;padding-left: 5px;"><span>{%if j.director %}Директор{% else %}Сотрудник{% endif %}</span></td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div></div>
+			<br>
+		</div>
+		<div class="co-delete" onclick="delcoalert('{{i.codata.name}}', '{{i.codata.id}}')"></div>
+		<div class="co-scroll"></div>
+	</div>
+{% endfor %}
+<br>
+{% else %}
+<p style="color: #522302;margin-top: 20px;font-size: 18px;">Только администратор сайта может просматривать эту информацию!</p>
+{% endif %}
+
+{% endblock %}

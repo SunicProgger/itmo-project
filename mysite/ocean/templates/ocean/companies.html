@@ -1,0 +1,135 @@
+{% extends "ocean/wrapper.html" %}
+
+{% block include %}
+	{% if dict_co %}
+		<div id="delshipalert" style="display: none;position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.7);z-index: 100;padding: 5px;"></div>
+		<div class="row" style="border-bottom: 1px solid #522302;">
+			<div class="col-sm-6 col-12 co-info-1" id="companyblock" style="{% if error == 'noemail' %}display: none;{% endif %}{% if error == 'notdir' %}display: none;{% endif %}">
+				<div class="col-12 justify-content-center"><div class="name-font text-center" style="font-size: 25px;font-style: italic;font-weight: bold;color: #522302;">{{dict_co.name}}</div></div>
+				<div class="col-12 text-left">
+					<p style="font-size: 18px;color: #522302;margin-bottom: 2px;"><span style="font-weight: bold">Дата основания: </span><span style="font-style: italic;">{{dict_co.date}}</span></p>
+					<p style="font-size: 18px;color: #522302;margin-bottom: 2px;"><span style="font-weight: bold">Местоположение: </span><span style="font-style: italic;">{{dict_co.location}}</span></p>
+					<p style="font-size: 18px;color: #522302;margin-bottom: 2px;text-align: justify;"><span style="font-weight: bold">Сайт: </span><a href="https://{{dict_co.link}}" target="_blank" style="color: white;"><span style="font-style: italic;">{{dict_co.link}}</span></a></p>
+					<div id="co-info-title">{{dict_co.title}}</div>
+				</div>
+			</div>
+			<div class="col-sm-6 col-12 co-info-1" style="padding-bottom: 10px;{% if error == 'noemail' %}display: none;{% endif %}{% if error == 'notdir' %}display: none;{% endif %}">
+				<div class="col-12 justify-content-center"><div class="name-font text-center" style="font-size: 25px;font-style: italic;font-weight: bold;color: #522302;">Директор</div></div>
+				<div class="row d-flex justify-content-between">
+					<div class="col-auto col-md-6 col-lg-7 col-xl-auto text-left">
+						<p style="font-size: 18px;color: #522302;margin-bottom: 2px;"><span style="font-weight: bold">ФИО: </span><span style="font-style: italic;">{{dict_co.fullname}}</span></p>
+						<p style="font-size: 18px;color: #522302;margin-bottom: 2px;"><span style="font-weight: bold">Дата рождения: </span><span style="font-style: italic;">{{dict_co.birthday}}</span></p>
+					</div>
+					<div class="col-auto" style="margin-right: 20px;border: 1px solid #522302;padding: 0;"><img width="150px" height="175px" src="{{dict_co.photo}}" alt=""></div>
+				</div>
+				{% if user.company == dict_co.id %}
+					{% if user.director %}
+					<div id="block-edit-co-top"></div>
+					{% endif %}
+				{% endif %}
+			</div>
+		</div>
+		<form action="/editco/" name="editcoform" method="post" style="font-size: 18px;color: #522302;">
+			{% csrf_token %}
+			<div class="row">
+				<input id="editcoid" type="hidden" name="editcoid" value="{{dict_co.id}}" required hidden>
+				<div class="col-sm-6 col-12 co-info-2" id="companyblock" style="position: relative;{% if error == 'noemail' %}display: block;{% endif %}{% if error == 'notdir' %}display: block;{% endif %}">
+					<div class="col-12 d-flex justify-content-center"><input id="editconame" type="text" name="editconame" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);font-family: CaviarDreams;font-style: italic;font-size: 24px;width: 80%;text-align: center;font-weight: bold;color: #522302;font-size: 25px;" value="{% if lastinfo %}{{lastinfo.name}}{% else %}{{dict_co.name}}{% endif %}" required></div>
+					<div class="col-12 text-left">
+						<label style="font-size: 18px;font-weight: bold;margin: 0;">Дата основания:</label>
+						<input id="editcodate" type="text" name="editcodate" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);color: #522302;" value="{% if lastinfo %}{{lastinfo.date}}{% else %}{{dict_co.date}}{% endif %}">
+						<br>
+						<label style="font-size: 18px;font-weight: bold;margin: 0;">Местоположение:</label>
+						<input id="editcolocation" type="text" name="editcolocation" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);width: 60%;color: #522302;" value="{% if lastinfo %}{{lastinfo.loc}}{% else %}{{dict_co.location}}{% endif %}">
+						<br>
+						<label style="font-size: 18px;font-weight: bold;margin: 0;">Сайт:</label>
+						<input id="editcolink" type="text" name="editcolink" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);color: #522302;" value="{% if lastinfo %}{{lastinfo.link}}{% else %}{{dict_co.link}}{% endif %}">
+						<br>
+						<label style="font-size: 18px;font-weight: bold;margin: 0;">Описание:</label>
+						<textarea id="editcotitle" name="editcotitle" style="border-radius: 5px;width: calc(100% + 10px);border: none;padding-left: 2px;background-color: rgba(0,0,0,0);color: #522302;" rows="4">{% if lastinfo %}{{lastinfo.title}}{% else %}{{dict_co.title}}{% endif %}</textarea>
+					</div>
+				</div>
+				<div class="col-sm-6 col-12 co-info-2" style="padding-bottom: 10px;{% if error == 'noemail' %}display: block;{% endif %}{% if error == 'notdir' %}display: block;{% endif %}">
+					<div class="col-12 justify-content-center"><div class="name-font text-center" style="font-size: 25px;font-style: italic;font-weight: bold;color: #522302;">Директор</div></div>
+					<label style="color: #522302;font-size: 18px;font-weight: bold;margin: 0;">Почта директора:</label>
+					<input id="editcodirector" type="email" name="editcodirector" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;background-color: rgba(0,0,0,0);{% if error == 'noemail' %}border: 2px solid red;{% endif %}{% if error == 'notdir' %}border: 2px solid red;{% endif %}" value="{% if lastinfo %}{{lastinfo.mail}}{% else %}{{dict_co.director}}{% endif %}" required>
+					<br>
+					{% if error == 'noemail' %}
+					<label style="color: red;font-size: 14px;margin: 0;padding: 0;">Аккаунт должен быть зарегистрирован в системе.</label>
+					{% endif %}
+					{% if error == 'notdir' %}
+					<label style="color: red;font-size: 14px;margin: 0;padding: 0;">Пользователь должен обладать правами директора.</label>
+					{% endif %}
+					<div style="position: absolute;top: 5px;right: 20px;"><input type="submit" style="background-color: #03b01f;border-radius: 5px;border: none;cursor: pointer;color: white;margin-top: 10px;" value="Сохранить"></div>
+
+					<div style="position: absolute;bottom: 15px;right: 15px;"><div id="edit-co-back">Отмена</div></div>
+				</div>
+			</div>
+		</form>
+		{% if user.company == dict_co.id %}
+			<div class="container content-center" style="position: relative;border: 3px solid #522302;background-color: white;margin-top: 30px;min-height: 50px;border-radius: 10px;">
+				<div id="add_ship" class="mx-auto my-1">
+					<div class="col-12 mx-auto" id="open-add-ship"></div>
+					<p style="color: #522302;font-size: 24px;font-style: italic;text-align: center;margin-top: 10px;width: 100%;">Добавить судно во флот компании {{user.get_company}}</p>
+					<div class="col-sm-12 col-12" id="add-ship-form">
+						<form action="/newship/" name="addshipform" method="post" style="margin-top: 20px;">
+						{% csrf_token %}
+						<label style="color: white;font-size: 15px;font-weight: bold;">Наименование судна:</label>
+						<br>
+						<input id="addshipname" type="text" name="addshipname" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" required>
+						<br>
+						<label style="color: white;font-size: 15px;font-weight: bold;">Модель:</label>
+						<br>
+						<input id="addshipmodel" type="text" name="addshipmodel" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" required>
+						<br>
+						<label style="color: white;font-size: 15px;font-weight: bold;">Дата приобретения:</label>
+						<br>
+						<input id="addshipdata" type="text" name="addshipdata" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;" required>
+						<br>
+						<label style="color: white;font-size: 15px;font-weight: bold;">Описание:</label>
+						<br>
+						<textarea id="addshiptitle" name="addshiptitle" style="border-radius: 5px;min-width: 400px;min-height: 100px;border: none;padding-left: 2px;" required></textarea>
+						<br>
+						<input type="submit" style="background-color: #03b01f;border-radius: 5px;border: none;cursor: pointer;color: white;margin-top: 5px;" value="Добавить">
+						</form>
+						<div id="add-ship-close-button">Отмена</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		{% for i in ships %}
+			<div class="container" style="position: relative;border: 3px solid #522302;background-color: white;margin-top: 30px;min-height: 50px;border-radius: 10px;">
+				<div class="row justify-content-center"><span class="name-font ship-name-for-edit" style="color: #522302;font-size: 25px;font-style: italic;font-weight: bold;">{{i.name}}</span></div>
+				<p style="font-size: 18px;color: #522302;margin-bottom: 2px;"><span style="font-weight: bold">Тип модели: </span><span class="ship-model-for-edit" style="font-style: italic;">{{i.model}}</span></p>
+				<p style="font-size: 18px;color: #522302;margin-bottom: 2px;"><span style="font-weight: bold">Дата приобретения: </span><span class="ship-date-for-edit" style="font-style: italic;">{{i.date}}</span></p>
+				<p style="font-size: 18px;color: #522302;margin-bottom: 2px;text-align: justify;"><span style="font-weight: bold">Краткое описание: </span><span class="ship-title-for-edit" style="white-space: pre-wrap;font-style: italic;">{{i.title}}</span></p>
+				{% if user.company == dict_co.id %}
+					<div class="block-edit-top" style="right: 30px;"></div>
+					<div class="block-delete-top" onclick="delshipalert('{{i.name}}', '{{i.id}}')"></div>
+				{% endif %}
+				<span class="ship-id-for-edit" style="display: none;">{{i.id}}</span>
+			</div>
+		{% endfor %}
+		<div class="col-12" id="edit-ship-block" style="position: relative;">
+			<form action="/editship/" name="editshipform" method="post">
+				{% csrf_token %}
+				<input id="editshipid" type="hidden" name="editshipid" value="" required hidden>
+				<div class="row justify-content-center"><input class="name-font" id="editshipname" type="text" name="editshipname" style="text-align: center;color: #522302;font-size: 25px;font-style: italic;font-weight: bold;border: none;width: 60%;" value="" required></div>
+				<label style="color: #522302;font-size: 18px;font-weight: bold;">Модель:</label>
+				<input id="editshipmodel" type="text" name="editshipmodel" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;color: #522302;" value="" required>
+				<br>
+				<label style="color: #522302;font-size: 18px;font-weight: bold;">Дата приобретения:</label>
+				<input id="editshipdate" type="text" name="editshipdate" style="border-radius: 5px;min-width: 250px;border: none;padding-left: 2px;color: #522302;" value="" required>
+				<br>
+				<label style="color: #522302;font-size: 18px;font-weight: bold;">Краткое описание:</label>
+				<br>
+				<textarea id="editshiptitle" name="editshiptitle" style="border-radius: 5px;width: 100%;min-height: 10px;border: none;padding-left: 2px;" rows="4" required></textarea>
+				<div id="edit-ship-close-button" style="position: absolute;top: 10px;right: 112px;background-color: #522302;border: none;border-radius: 5px;padding: 1px 5px;color: white;cursor: pointer;">Отмена</div>
+				<div style="position: absolute;top: 10px;right: 15px;">
+					<input type="submit" style="background-color: #03b01f;border-radius: 5px;border: none;cursor: pointer;color: white;" value="Сохранить">
+				</div>
+			</form>
+		</div>
+		<div class="w-100" style="height: 20px;"></div>
+	{% endif %}
+{% endblock %}

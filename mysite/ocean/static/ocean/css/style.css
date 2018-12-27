@@ -1,0 +1,369 @@
+/** {
+	font-family: CaviarDreams;
+}
+*/
+html {
+	min-height: 100%;
+	position: relative;
+}
+body {
+	min-height: 1000px;
+	position: relative;
+}
+@font-face {
+	font-family: name-font;
+	src: url(/static/ocean/fonts/azoft-sans.ttf) format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: name-font;
+	src: url(/static/ocean/fonts/azoft-sans-italic.ttf) format('truetype');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: name-font;
+	src: url(/static/ocean/fonts/azoft-sans-bold.ttf) format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: name-font;
+	src: url(/static/ocean/fonts/azoft-sans-bold-italic.ttf) format('truetype');
+	font-weight: bold;
+	font-style: italic;
+}
+@font-face {
+	font-family: CaviarDreams;
+	src: url(/static/ocean/fonts/CaviarDreams.ttf) format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: CaviarDreams;
+	src: url(/static/ocean/fonts/CaviarDreams_Italic.ttf) format('truetype');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: CaviarDreams;
+	src: url(/static/ocean/fonts/CaviarDreams_Bold.ttf) format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: CaviarDreams;
+	src: url(/static/ocean/fonts/CaviarDreams_BoldItalic.ttf) format('truetype');
+	font-weight: bold;
+	font-style: italic;
+}
+
+.col-0, .col-sm-0, .col-md-0, .col-lg-0, .col-xl-0 {
+	flex: 0 0 0;
+	max-width: 0;
+}
+
+.vcenter {
+	display: inline-block;
+  	float: none;
+  	vertical-align: middle;
+}
+
+.form-head-wrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	-ms-align-items: center;
+	align-items: center;
+}
+
+#row-nav-wrapper div a div {
+	font-size: 25px;
+}
+
+.name-font {
+	font-family: CaviarDreams;
+}
+
+#companyblock {
+	border-right: 1px solid #522302;
+	border-bottom: none;
+}
+
+.block-edit-top {
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	width: 20px;
+	height: 20px;
+	background-image: url('/static/ocean/img/edit2.png');
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+}
+
+#block-edit-co-top {
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	width: 20px;
+	height: 20px;
+	background-image: url('/static/ocean/img/edit2.png');
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+}
+
+.block-delete-top {
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: 5px;
+	width: 20px;
+	height: 20px;
+	background-image: url('/static/ocean/img/del2.png');
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+}
+.people-delete {
+	display: block;
+	position: relative;
+	width: 20px;
+	height: 20px;
+	background-image: url('/static/ocean/img/del2.png');
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+}
+
+.people-activate {
+	display: block;
+	position: relative;
+	width: 20px;
+	height: 20px;
+	background-image: url('/static/ocean/img/activate.png');
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+}
+
+#add_ship {
+	padding-bottom: 20px;
+	overflow: hidden;
+	height: 65px;
+}
+
+#addp {
+	width: 20px;
+	height: 20px;
+	background-image: url('/static/ocean/img/add.png');
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+}
+
+#co-info-title {
+	width: calc(100% + 10px);
+	color: #522302;
+	padding-bottom: 2px;
+	font-size: 18px;
+	font-style: italic;
+	text-align: justify;
+	max-height: 200px;
+	overflow: auto;
+	white-space: pre-wrap;
+}
+
+.co-delete {
+	position: absolute;
+	top: 3px;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	background-image: url(/static/ocean/img/del2.png);
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+}
+
+.co-scroll {
+	position: absolute;
+	top: 3px;
+	left: 10px;
+	width: 30px;
+	height: 30px;
+	background-image: url(/static/ocean/img/scroll.png);
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+}
+
+.admincodata {
+	display: block;
+	height: 40px;
+	border: 2px solid #522302;
+	color: #522302;
+	border-radius: 10px;
+	background-color: white;
+	margin-top: 20px;
+	overflow: hidden;
+}
+
+#con1img {
+	padding: 0;
+	margin: 0;
+	width: 1218px;
+	height: 500px;
+	background-image: url(/static/ocean/img/con1_1.jpg);
+}
+
+#addcompany {
+	position: absolute;
+	right: 15px;
+	top: 10px;
+	width: 50px;
+	height: 50px;
+	background-image: url(/static/ocean/img/add.png);
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+}
+
+.person-block {
+	background-color: white;
+	border: 2px solid #502322;
+	min-height: 20px;
+	margin: 10px 20px;
+	border-radius: 10px;
+	padding: 15px 10px;
+}
+
+#add-ship-form {
+	position: relative;
+	margin-top: 10px;
+	background-image: url('/static/ocean/img/add-ship2.jpg');
+	border: 1px solid #522302;
+	height: 380px;
+	border-radius: 10px;
+	text-shadow: 
+	2px   0  0   #522302, 
+    -2px   0  0   #522302, 
+     0    2px 0   #522302, 
+     0   -2px 0   #522302, 
+     1px  1px 0   #522302, 
+    -1px -1px 0   #522302, 
+     1px -1px 0   #522302, 
+    -1px  1px 0   #522302,
+     1px  1px 5px #522302;
+}
+
+#open-add-ship {
+	height: 50px;
+	width: 50px;
+	margin-top: 10px;
+	background-image: url('/static/ocean/img/add.png');
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	cursor: pointer;
+	transition: height .5s;
+}
+
+#add-p-block {
+	display: none;
+	width: 100%;
+	margin-left: 35px;
+	border: 2px solid #522302;
+	background-color: white;
+	border-radius: 10px;
+}
+
+#search-person {
+	margin-left: 35px;
+	border-radius: 10px;
+	border: none;
+	padding-left: 5px;
+}
+
+#search-co {
+	margin-left: 5px;
+	border-radius: 10px;
+	border: none;
+	padding-left: 5px;
+}
+
+#edit-ship-block {
+	display: none;
+	overflow: hidden;
+	margin-top: 20px;
+	border: 3px solid #522302;
+	background-color: white;
+	min-height: 30px;
+	border-radius: 10px;
+}
+
+#edit-co-back {
+	width: 90px;
+	height: 25px;
+	background-color: #522302;
+	border-radius: 5px;
+	border: none;
+	cursor: pointer;
+	color: white;
+	margin-top: 10px;
+	text-align: center;
+}
+
+.co-info-2 {
+	display: none;
+}
+
+#add-ship-close-button {
+	position: absolute;
+	bottom: -45px;
+	right: 0;
+	color: white;
+	width: 95px;
+	height: 25px;
+	background-color: #522302;
+	border: none;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 5px;
+}
+
+table {
+	border: 2px solid black;
+}
+
+table tr, table tr td {
+	border: 1px solid black;
+}
+
+@media screen and (max-width: 576px) {
+.form-head-wrapper {
+	display: block;
+	width: 100%;
+}
+.form-head-wrapper div input {
+	height: 30px;
+}
+
+#row-nav-wrapper div a div {
+	font-size: 15px;
+}
+
+#companyblock {
+	border-right: none;
+	border-bottom: 1px solid #522302;
+}
+
+#backfromaddshippage {
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
+}
